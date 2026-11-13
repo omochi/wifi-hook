@@ -88,8 +88,12 @@ final class AppModel: NSObject, ObservableObject, CLLocationManagerDelegate, CWE
     var monitoringDescription: String {
         if !config.monitoring { return "停止中" }
         if monitorError != nil { return "監視を開始できませんでした" }
-        if locationStatus != .authorizedAlways { return "位置情報の許可を確認してください" }
+        if !locationAuthorized { return "位置情報の許可を確認してください" }
         return isObserving ? "監視中" : "準備中"
+    }
+
+    var locationAuthorized: Bool {
+        locationStatus == .authorizedAlways
     }
 
     nonisolated func ssidDidChangeForWiFiInterface(withName interfaceName: String) { Task { @MainActor in self.scheduleEvaluation() } }
@@ -190,7 +194,7 @@ final class AppModel: NSObject, ObservableObject, CLLocationManagerDelegate, CWE
     func openNotificationSettings() { NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!) }
 
     func loadNetworks() {
-        guard !scanning else { return }
+        guard locationAuthorized, !scanning else { return }
         scanning = true; scanError = nil
         DispatchQueue.global(qos: .utility).async { [weak self] in
             let interface = CWWiFiClient.shared().interface()
@@ -198,9 +202,22 @@ final class AppModel: NSObject, ObservableObject, CLLocationManagerDelegate, CWE
             do {
                 let networks = try interface?.scanForNetworks(withName: nil) ?? []
                 let nearby = Array(Set(networks.compactMap { $0.ssid })).sorted()
-                DispatchQueue.main.async { self?.nearby = nearby; self?.remembered = remembered; self?.scanning = false }
+                DispatchQueue.main.async {
+                    guard let self else { return }
+                    self.scanning = false
+                    guard self.locationAuthorized else { return }
+                    self.nearby = nearby
+                    self.remembered = remembered
+                }
             } catch {
-                DispatchQueue.main.async { self?.remembered = remembered; self?.nearby = []; self?.scanError = "周囲の Wi-Fi を取得できませんでした: \(error.localizedDescription)"; self?.scanning = false }
+                DispatchQueue.main.async {
+                    guard let self else { return }
+                    self.scanning = false
+                    guard self.locationAuthorized else { return }
+                    self.remembered = remembered
+                    self.nearby = []
+                    self.scanError = "周囲の Wi-Fi を取得できませんでした: \(error.localizedDescription)"
+                }
             }
         }
     }
@@ -293,7 +310,10 @@ struct RulesView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack { Text("Wi-Fi の設定").font(.title2.bold()); Spacer(); Button("追加", systemImage: "plus") { isNew = true; editing = Rule() } }
-            if model.config.rules.isEmpty { ContentUnavailableView("設定はまだありません", systemImage: "wifi", description: Text("「追加」から Wi-Fi とスクリプトを登録します。")) }
+            if model.config.rules.isEmpty {
+                ContentUnavailableView("設定はまだありません", systemImage: "wifi", description: Text("「追加」から Wi-Fi とスクリプトを登録します。"))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
             else {
                 List(model.config.rules) { rule in
                     HStack { Label(rule.ssid, systemImage: "wifi"); Spacer(); Button("編集") { isNew = false; editing = rule } }
@@ -318,8 +338,22 @@ struct RuleEditor: View {
                     if !model.nearby.isEmpty { Section("周囲のネットワーク") { ForEach(model.nearby, id: \.self) { name in Button(name) { rule.ssid = name } } } }
                     if !model.remembered.isEmpty { Section("保存済みのネットワーク") { ForEach(model.remembered, id: \.self) { name in Button(name) { rule.ssid = name } } } }
                     if model.nearby.isEmpty && model.remembered.isEmpty { Text(model.scanning ? "取得中…" : "ネットワークがありません") }
+                }.disabled(!model.locationAuthorized)
+                Button("更新") { model.loadNetworks() }.disabled(!model.locationAuthorized || model.scanning)
+            }
+            if !model.locationAuthorized {
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Wi-Fi の一覧と接続先の取得には位置情報の許可が必要です。Wi-Fi 名は直接入力することもできます。")
+                            .font(.caption)
+                        if model.locationStatus == .notDetermined {
+                            Button("位置情報を許可する") { model.requestLocation() }
+                        } else {
+                            Button("位置情報の設定を開く") { model.openLocationSettings() }
+                        }
+                    }
                 }
-                Button("更新") { model.loadNetworks() }.disabled(model.scanning)
             }
             if let error = model.scanError { Text(error).font(.caption).foregroundStyle(.secondary) }
             TextField("Wi-Fi 名", text: $rule.ssid)
@@ -336,6 +370,10 @@ struct RuleEditor: View {
             }
         }.padding(24).frame(width: 510)
             .onAppear { model.loadNetworks() }
+            .onChange(of: model.locationStatus) {
+                if model.locationAuthorized { model.loadNetworks() }
+                else { model.nearby = []; model.remembered = []; model.scanError = nil }
+            }
             .confirmationDialog("この Wi-Fi の設定を削除しますか？", isPresented: $showingDelete) {
                 Button("削除", role: .destructive) { model.config.rules.removeAll { $0.id == rule.id }; dismiss() }
                 Button("キャンセル", role: .cancel) {}
@@ -364,10 +402,16 @@ struct SettingsView: View {
                 Toggle("メニューバーに表示", isOn: $model.config.showMenuBar)
             }
             Section("権限") {
-                LabeledContent("位置情報") {
+                LabeledContent {
                     if model.locationStatus == .notDetermined { Button("許可する") { model.requestLocation() } }
-                    else if model.locationStatus == .authorizedAlways { Text("許可済み").foregroundStyle(.secondary) }
+                    else if model.locationAuthorized { Text("許可済み").foregroundStyle(.secondary) }
                     else { Button("システム設定を開く") { model.openLocationSettings() } }
+                } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("位置情報")
+                        Text("周囲の Wi-Fi 一覧と現在の接続先の取得に使用します。")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
                 LabeledContent("通知") {
                     if model.notificationStatus == .notDetermined { Button("許可する") { model.requestNotifications() } }
