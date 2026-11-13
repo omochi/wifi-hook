@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeVersion="2700" version="1.7">
   <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
-    <BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="WiFiHook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildActionEntry></BuildActionEntries>
+    <BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="Wi-Fi Hook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildActionEntry></BuildActionEntries>
   </BuildAction>
-  <LaunchAction buildConfiguration="Debug"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="WiFiHook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildableProductRunnable></LaunchAction>
+  <LaunchAction buildConfiguration="Debug"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="Wi-Fi Hook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildableProductRunnable></LaunchAction>
   <TestAction buildConfiguration="Debug"/>
-  <ProfileAction buildConfiguration="Release"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="WiFiHook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildableProductRunnable></ProfileAction>
+  <ProfileAction buildConfiguration="Release"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="Wi-Fi Hook.app" BlueprintName="WiFiHook" ReferencedContainer="container:WiFiHook.xcodeproj"/></BuildableProductRunnable></ProfileAction>
   <AnalyzeAction buildConfiguration="Debug"/><ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"/>
 </Scheme>

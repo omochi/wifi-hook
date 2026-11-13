@@ -238,7 +238,7 @@ struct WiFiHookApp: App {
     var body: some Scene {
         Window("Wi-Fi Hook", id: "main") { ContentView().environmentObject(model) }
             .windowResizability(.contentMinSize)
-        MenuBarExtra("Wi-Fi Hook", systemImage: "wifi", isInserted: Binding(
+        MenuBarExtra(isInserted: Binding(
             get: { model.config.showMenuBar },
             set: { visible in
                 guard model.config.showMenuBar != visible else { return }
@@ -252,7 +252,25 @@ struct WiFiHookApp: App {
             Divider()
             Button("Wi-Fi Hook を開く") { model.showWindow() }
             Button("Wi-Fi Hook を終了") { NSApp.terminate(nil) }
+        } label: {
+            Image(nsImage: menuBarIcon)
+                .accessibilityLabel("Wi-Fi Hook")
         }
+    }
+
+    private var menuBarIcon: NSImage {
+        let image = NSImage(size: NSSize(width: 25, height: 18), flipped: false) { _ in
+            let wifi = NSImage(systemSymbolName: "wifi", accessibilityDescription: nil)?
+                .withSymbolConfiguration(.init(pointSize: 10, weight: .semibold))
+            let bolt = NSImage(systemSymbolName: "bolt.fill", accessibilityDescription: nil)?
+                .withSymbolConfiguration(.init(pointSize: 14, weight: .semibold))
+            NSColor.black.set()
+            wifi?.draw(in: NSRect(x: 0, y: 5, width: 12, height: 10))
+            bolt?.draw(in: NSRect(x: 13, y: 1, width: 10, height: 16))
+            return true
+        }
+        image.isTemplate = true
+        return image
     }
 }
 
