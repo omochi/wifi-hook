@@ -1,0 +1,28 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1;
+ classes = {};
+ objectVersion = 56;
+ objects = {
+  A10000000000000000000002 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* Domain.swift */; };
+  A10000000000000000000001 /* WiFiHookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* WiFiHookApp.swift */; };
+  A20000000000000000000003 /* Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
+  A20000000000000000000001 /* WiFiHookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiHookApp.swift; sourceTree = "<group>"; };
+  A20000000000000000000002 /* WiFiHook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WiFiHook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+  A30000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+  A40000000000000000000001 = {isa = PBXGroup; children = (A40000000000000000000002 /* WiFiHook */, A40000000000000000000003 /* Products */,); sourceTree = "<group>"; };
+  A40000000000000000000002 /* WiFiHook */ = {isa = PBXGroup; children = (A20000000000000000000001 /* WiFiHookApp.swift */, A20000000000000000000003 /* Domain.swift */,); path = WiFiHook; sourceTree = "<group>"; };
+  A40000000000000000000003 /* Products */ = {isa = PBXGroup; children = (A20000000000000000000002 /* WiFiHook.app */,); name = Products; sourceTree = "<group>"; };
+  A50000000000000000000001 /* WiFiHook */ = {isa = PBXNativeTarget; buildConfigurationList = A80000000000000000000002 /* Build configuration list for PBXNativeTarget */; buildPhases = (A60000000000000000000001 /* Sources */, A30000000000000000000001 /* Frameworks */, A60000000000000000000002 /* Resources */,); buildRules = (); dependencies = (); name = WiFiHook; productName = WiFiHook; productReference = A20000000000000000000002 /* WiFiHook.app */; productType = "com.apple.product-type.application"; };
+  A70000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastUpgradeCheck = 2700; TargetAttributes = {A50000000000000000000001 = {CreatedOnToolsVersion = 27.2; }; }; }; buildConfigurationList = A80000000000000000000001 /* Build configuration list for PBXProject */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = A40000000000000000000001; productRefGroup = A40000000000000000000003 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (A50000000000000000000001 /* WiFiHook */,); };
+  A60000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001 /* WiFiHookApp.swift in Sources */, A10000000000000000000002 /* Domain.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0; };
+  A60000000000000000000002 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+  A90000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 27.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; }; name = Debug; };
+  A90000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 27.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; }; name = Release; };
+  A90000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Wi-Fi Hook"; INFOPLIST_KEY_NSLocationUsageDescription = "接続中の Wi-Fi 名を取得し、登録されたスクリプトを実行するために使用します。"; MARKETING_VERSION = 0.1; PRODUCT_BUNDLE_IDENTIFIER = "com.omochimetaru.WiFiHook"; PRODUCT_NAME = WiFiHook; SWIFT_VERSION = 5.0; }; name = Debug; };
+  A90000000000000000000004 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Manual; CODE_SIGN_IDENTITY = "-"; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Wi-Fi Hook"; INFOPLIST_KEY_NSLocationUsageDescription = "接続中の Wi-Fi 名を取得し、登録されたスクリプトを実行するために使用します。"; MARKETING_VERSION = 0.1; PRODUCT_BUNDLE_IDENTIFIER = "com.omochimetaru.WiFiHook"; PRODUCT_NAME = WiFiHook; SWIFT_VERSION = 5.0; }; name = Release; };
+  A80000000000000000000001 /* Build configuration list for PBXProject */ = {isa = XCConfigurationList; buildConfigurations = (A90000000000000000000001 /* Debug */, A90000000000000000000002 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  A80000000000000000000002 /* Build configuration list for PBXNativeTarget */ = {isa = XCConfigurationList; buildConfigurations = (A90000000000000000000003 /* Debug */, A90000000000000000000004 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+ };
+ rootObject = A70000000000000000000001 /* Project object */;
+}
