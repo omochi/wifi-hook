@@ -221,7 +221,15 @@ struct WiFiHookApp: App {
     var body: some Scene {
         Window("Wi-Fi Hook", id: "main") { ContentView().environmentObject(model) }
             .windowResizability(.contentMinSize)
-        MenuBarExtra("Wi-Fi Hook", systemImage: "wifi", isInserted: $model.config.showMenuBar) {
+        MenuBarExtra("Wi-Fi Hook", systemImage: "wifi", isInserted: Binding(
+            get: { model.config.showMenuBar },
+            set: { visible in
+                guard model.config.showMenuBar != visible else { return }
+                DispatchQueue.main.async {
+                    if model.config.showMenuBar != visible { model.config.showMenuBar = visible }
+                }
+            }
+        )) {
             Text(model.monitoringDescription)
             Text(model.currentSSID ?? "Wi-Fi 未接続")
             Divider()
